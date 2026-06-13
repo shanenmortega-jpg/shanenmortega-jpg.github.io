@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Barbie Mortega — Virtual Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --pink:#E75480;--hot:#FF6EB4;--yellow:#FFD93D;
+      --mint:#6BCB77;--sky:#4D96FF;--lav:#C77DFF;
+      --cream:#FFF5F9;--ink:#1A1A2E;--soft:#FFF0F6;--r:18px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:14px 5%;background:rgba(255,245,249,.92);
+      backdrop-filter:blur(12px);z-index:100;
+      border-bottom:2px dashed #FF6EB444;
+    }
+    .nav-logo{font-weight:900;font-size:1.1rem;color:var(--pink)}
+    .nav-links{display:flex;gap:20px;list-style:none}
+    .nav-links a{text-decoration:none;font-weight:700;font-size:.84rem;color:var(--ink);transition:color .2s}
+    .nav-links a:hover{color:var(--pink)}
+    .nav-cta{
+      background:var(--pink);color:#fff;padding:8px 18px;
+      border-radius:50px;font-weight:800;font-size:.82rem;
+      text-decoration:none;transition:opacity .2s;
+    }
+    .nav-cta:hover{opacity:.85}
+
+    /* ── HERO ── */
+    #hero{
+      min-height:100vh;display:flex;align-items:center;
+      padding:120px 5% 80px;position:relative;overflow:hidden;
+    }
+    #hero::before{
+      content:'';position:absolute;top:-100px;right:-120px;
+      width:520px;height:520px;border-radius:50%;
+      background:radial-gradient(circle,#FF6EB433,transparent 70%);
+      animation:float 7s ease-in-out infinite;
+    }
+    #hero::after{
+      content:'';position:absolute;bottom:-80px;left:-80px;
+      width:380px;height:380px;border-radius:50%;
+      background:radial-gradient(circle,#FFD93D33,transparent 70%);
+      animation:float 9s ease-in-out infinite reverse;
+    }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+    .hero-inner{
+      display:flex;align-items:center;gap:60px;
+      position:relative;z-index:1;width:100%;max-width:1100px;
+    }
+    .hero-content{flex:1;min-width:280px}
+    .hero-photo img{
+      width:260px;height:320px;object-fit:cover;object-position:top;
+      border-radius:24px;border:4px solid var(--pink);
+      box-shadow:0 20px 50px #E7548033;flex-shrink:0;
+    }
+    .hero-tag{
+      display:inline-block;background:var(--yellow);color:var(--ink);
+      font-weight:800;font-size:.76rem;text-transform:uppercase;letter-spacing:1.5px;
+      padding:6px 16px;border-radius:50px;margin-bottom:16px;
+    }
+    h1{font-size:clamp(2.3rem,5vw,3.7rem);font-weight:900;line-height:1.1;margin-bottom:16px}
+    h1 span{color:var(--pink);position:relative}
+    h1 span::after{
+      content:'';position:absolute;left:0;bottom:2px;right:0;height:5px;
+      background:var(--yellow);border-radius:4px;z-index:-1;opacity:.7;
+    }
+    .hero-sub{font-family:'Lora',serif;font-size:1rem;line-height:1.7;color:#666;max-width:460px;margin-bottom:26px}
+    .btn-group{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-block;text-decoration:none;padding:13px 26px;
+      border-radius:50px;font-weight:800;font-size:.88rem;
+      transition:transform .2s,box-shadow .2s;cursor:pointer;border:none;
+    }
+    .btn:hover{transform:translateY(-3px)}
+    .btn-primary{background:var(--pink);color:#fff;box-shadow:0 6px 20px #E7548044}
+    .btn-primary:hover{box-shadow:0 10px 28px #E7548066}
+    .btn-outline{background:transparent;color:var(--ink);border:2.5px solid var(--ink)}
+    .btn-outline:hover{background:var(--ink);color:#fff}
+
+    /* ── SECTION SHARED ── */
+    section{padding:80px 5%}
+    .section-label{font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--pink);margin-bottom:8px}
+    h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:900;margin-bottom:40px;line-height:1.15}
+
+    /* ── ABOUT ── */
+    #about{background:var(--soft);display:flex;flex-wrap:wrap;gap:50px;align-items:flex-start}
+    .about-text{flex:1;min-width:280px}
+    .about-text p{font-family:'Lora',serif;font-size:.97rem;color:#555;line-height:1.8;margin-bottom:14px}
+    .tool-section{margin-top:22px}
+    .tool-section h3{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--pink);margin-bottom:10px}
+    .tool-tags{display:flex;flex-wrap:wrap;gap:7px}
+    .tool-tag{background:#fff;border:2px solid #FFD93D;border-radius:50px;padding:4px 13px;font-size:.78rem;font-weight:700}
+    .about-sidebar{flex-shrink:0;width:250px;display:flex;flex-direction:column;gap:14px}
+    .stat-card{background:var(--yellow);border-radius:var(--r);padding:28px;text-align:center}
+    .stat-card .emoji{font-size:3rem;line-height:1;margin-bottom:14px}
+    .stats-row{display:flex;justify-content:space-around}
+    .stat-num{font-size:1.8rem;font-weight:900}
+    .stat-lbl{font-size:.68rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.8px}
+    .certs-card{background:#fff;border:2.5px solid var(--pink);border-radius:var(--r);padding:18px 20px}
+    .certs-card h3{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--pink);margin-bottom:10px}
+    .cert-item{font-size:.82rem;color:#444;padding:4px 0;border-bottom:1px solid #f5dae8}
+    .cert-item:last-child{border-bottom:none}
+
+    /* ── SERVICES ── */
+    #services{}
+    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .service-card{
+      background:#fff;border-radius:var(--r);padding:26px 22px;
+      border:2.5px solid transparent;position:relative;overflow:hidden;
+      transition:transform .25s,border-color .25s,box-shadow .25s;
+    }
+    .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--r) var(--r) 0 0}
+    .service-card:nth-child(1)::before{background:var(--pink)}
+    .service-card:nth-child(2)::before{background:var(--sky)}
+    .service-card:nth-child(3)::before{background:var(--mint)}
+    .service-card:nth-child(4)::before{background:var(--lav)}
+    .service-card:nth-child(5)::before{background:var(--yellow)}
+    .service-card:nth-child(6)::before{background:var(--hot)}
+    .service-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.1);border-color:var(--yellow)}
+    .svc-icon{font-size:2rem;margin-bottom:10px}
+    .service-card h3{font-size:.95rem;font-weight:800;margin-bottom:7px}
+    .service-card p{font-size:.83rem;color:#666;line-height:1.6}
+
+    /* ── PORTFOLIO ── */
+    #portfolio{background:var(--soft)}
+    .portfolio-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+    .tab-btn{
+      padding:7px 18px;border-radius:50px;font-weight:800;font-size:.78rem;
+      border:2.5px solid var(--pink);background:transparent;color:var(--pink);cursor:pointer;transition:.2s;
+    }
+    .tab-btn.active,.tab-btn:hover{background:var(--pink);color:#fff}
+    .carousel-section{display:none}
+    .carousel-section.active{display:block}
+    .carousel-desc{font-family:'Lora',serif;color:#888;font-size:.87rem;margin-bottom:18px;font-style:italic}
+    .carousel-wrap{position:relative;padding:0 8px}
+    .carousel-outer{overflow:hidden;border-radius:var(--r)}
+    .carousel-track{display:flex;gap:14px;transition:transform .4s ease}
+    .carousel-slide{flex:0 0 calc(33.333% - 10px);min-width:0}
+    .carousel-slide img{
+      width:100%;aspect-ratio:4/5;object-fit:cover;
+      border-radius:var(--r);border:3px solid #fff;
+      box-shadow:0 6px 20px rgba(0,0,0,.12);cursor:pointer;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .carousel-slide img:hover{transform:scale(1.02);box-shadow:0 10px 28px rgba(0,0,0,.2)}
+    .cbtn{
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:var(--pink);color:#fff;border:none;
+      width:42px;height:42px;border-radius:50%;font-size:1.3rem;
+      cursor:pointer;z-index:10;box-shadow:0 4px 12px #E7548055;transition:.2s;
+    }
+    .cbtn:hover{background:var(--ink)}
+    .cbtn.prev{left:-14px}
+    .cbtn.next{right:-14px}
+    .cdots{display:flex;justify-content:center;gap:7px;margin-top:14px}
+    .dot{width:7px;height:7px;border-radius:50%;background:#ddd;cursor:pointer;transition:.2s}
+    .dot.active{background:var(--pink);width:18px;border-radius:4px}
+
+    /* ── EXPERIENCE ── */
+    #experience{}
+    .exp-list{display:flex;flex-direction:column;gap:18px}
+    .exp-card{
+      background:#fff;border-radius:var(--r);padding:24px 28px;
+      border-left:5px solid var(--pink);box-shadow:0 3px 14px rgba(0,0,0,.06);
+    }
+    .exp-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+    .exp-role{font-size:1rem;font-weight:800}
+    .exp-date{font-size:.74rem;font-weight:700;background:var(--yellow);padding:3px 11px;border-radius:50px}
+    .exp-co{font-size:.84rem;font-weight:700;color:var(--pink);margin-bottom:9px}
+    .exp-ul{list-style:none}
+    .exp-ul li{font-size:.83rem;color:#555;line-height:1.6;padding:2px 0 2px 16px;position:relative}
+    .exp-ul li::before{content:'✦';position:absolute;left:0;color:var(--pink);font-size:.65rem;top:5px}
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements{background:var(--soft)}
+    .ach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+    .ach-card{
+      background:#fff;border-radius:var(--r);padding:24px;
+      border:2.5px solid transparent;transition:border-color .2s,transform .2s;
+    }
+    .ach-card:hover{border-color:var(--yellow);transform:translateY(-4px)}
+    .ach-icon{font-size:1.9rem;margin-bottom:10px}
+    .ach-card h3{font-size:.92rem;font-weight:800;margin-bottom:7px}
+    .ach-card p{font-size:.82rem;color:#666;line-height:1.6}
+
+    /* ── CONTACT ── */
+    #contact{background:var(--ink);color:#fff;text-align:center}
+    #contact h2{color:#fff}
+    #contact .section-label{color:var(--yellow)}
+    .contact-sub{font-family:'Lora',serif;font-size:1rem;color:#aaa;max-width:460px;margin:-28px auto 32px;line-height:1.7}
+    .contact-links{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .contact-chip{
+      display:flex;align-items:center;gap:7px;
+      background:#fff1;border:2px solid #fff2;padding:11px 20px;border-radius:50px;
+      color:#fff;text-decoration:none;font-weight:700;font-size:.84rem;transition:.2s;
+    }
+    .contact-chip:hover{background:var(--pink);border-color:var(--pink)}
+
+    /* ── LIGHTBOX ── */
+    .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center}
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:88vw;max-height:88vh;border-radius:12px}
+    .lb-close{position:absolute;top:18px;right:24px;color:#fff;font-size:2.4rem;cursor:pointer;background:none;border:none;line-height:1}
+    .lb-nav{
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:#fff2;border:none;color:#fff;font-size:2rem;
+      padding:10px 15px;cursor:pointer;border-radius:50%;transition:.2s;
+    }
+    .lb-nav:hover{background:var(--pink)}
+    .lb-prev{left:18px}
+    .lb-next{right:18px}
+
+    footer{background:#111;color:#666;text-align:center;padding:20px;font-size:.8rem}
+    footer span{color:var(--pink)}
+
+    @media(max-width:800px){
+      .hero-inner{flex-direction:column-reverse;text-align:center}
+      .hero-sub,.btn-group{margin-left:auto;margin-right:auto}
+      .btn-group{justify-content:center}
+      .hero-photo img{width:200px;height:240px}
+      #about{flex-direction:column}
+      .about-sidebar{width:100%}
+      .carousel-slide{flex:0 0 calc(50% - 7px)}
+    }
+    @media(max-width:480px){
+      .carousel-slide{flex:0 0 100%}
+      .nav-links{gap:12px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✨ Barbie Mortega</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">✦ Open to opportunities</div>
+      <h1>Hi, I'm <span>Barbie</span>.<br>Your Virtual Assistant.</h1>
+      <p class="hero-sub">
+        Detail-oriented VA with 3+ years of remote experience across Real Estate, Operations, Social Media, and Content. AI-savvy, timezone-flexible, and ready to help your business thrive.
+      </p>
+      <div class="btn-group">
+        <a href="#contact" class="btn btn-primary">Let's Work Together →</a>
+        <a href="#portfolio" class="btn btn-outline">See My Work</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <!-- 💡 Replace the src below with your actual photo URL or file path -->
+      <img src="https://via.placeholder.com/260x320/E75480/ffffff?text=📸+Add+Photo" alt="Shanen Barbie Mortega"/>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text">
+    <div class="section-label">About Me</div>
+    <h2>Results-driven, AI-savvy &amp; always reliable 🌟</h2>
+    <p>I'm Shanen Barbie Mortega — a Virtual Assistant from Lipa City, Batangas with 3+ years of remote experience across real estate, e-commerce, fintech, and multi-industry operations. I specialize in GoHighLevel CRM, Shopify/Wix site management, social media content, video editing, and graphic design.</p>
+    <p>I've managed social media for 10+ simultaneous clients, built inbox triage systems with zero missed responses, launched a full AI SaaS podcast from scratch, and trained client teams on Claude AI — eliminating an additional hire. Proactive, timezone-flexible, and TOEIC CEFR C1 certified in English.</p>
+    <div class="tool-section">
+      <h3>Tools I Use</h3>
+      <div class="tool-tags">
+        <span class="tool-tag">Claude AI</span><span class="tool-tag">Canva</span><span class="tool-tag">CapCut</span>
+        <span class="tool-tag">GoHighLevel</span><span class="tool-tag">Notion</span><span class="tool-tag">ClickUp</span>
+        <span class="tool-tag">Trello</span><span class="tool-tag">Meta Business Suite</span><span class="tool-tag">Metricool</span>
+        <span class="tool-tag">Flodesk</span><span class="tool-tag">Shopify</span><span class="tool-tag">Wix</span>
+        <span class="tool-tag">HubSpot</span><span class="tool-tag">Slack</span><span class="tool-tag">Google Workspace</span>
+        <span class="tool-tag">Zapier</span><span class="tool-tag">Instantly.ai</span><span class="tool-tag">Lofty CRM</span>
+      </div>
+    </div>
+  </div>
+  <div class="about-sidebar">
+    <div class="stat-card">
+      <div class="emoji">🙋‍♀️</div>
+      <div class="stats-row">
+        <div><div class="stat-num">3+</div><div class="stat-lbl">Years</div></div>
+        <div><div class="stat-num">10+</div><div class="stat-lbl">Clients</div></div>
+        <div><div class="stat-num">C1</div><div class="stat-lbl">English</div></div>
+      </div>
+    </div>
+    <div class="certs-card">
+      <h3>Certifications</h3>
+      <div class="cert-item">🏆 TOEIC CEFR C1 — Advanced English</div>
+      <div class="cert-item">✈️ Amadeus Reservation &amp; Ticketing</div>
+      <div class="cert-item">🏨 American Hospitality Academy (With Honors)</div>
+      <div class="cert-item">🎓 BS Int'l Travel &amp; Tourism — GWA 1.317, With Distinction</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What I Offer</div>
+  <h2>Services 🛠️</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="svc-icon">📧</div>
+      <h3>Email &amp; Calendar Management</h3>
+      <p>High-volume inbox triage, priority systems, templates, scheduling — zero missed responses guaranteed.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">📱</div>
+      <h3>Social Media Management</h3>
+      <p>Content strategy, scheduling, and publishing across Instagram, TikTok, Facebook, LinkedIn, and Patreon for 10+ clients at once.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🎨</div>
+      <h3>Graphic Design &amp; Video Editing</h3>
+      <p>Canva graphics, CapCut short and long-form videos, carousels, reels, and branded marketing materials.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">📊</div>
+      <h3>CRM &amp; Operations Support</h3>
+      <p>GoHighLevel, HubSpot, and Lofty CRM pipeline management, SOPs, workflows, and leadership summaries.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">📋</div>
+      <h3>Data Entry &amp; Research</h3>
+      <p>Lead generation, database creation, market research, data verification, and organized spreadsheet management.</p>
+    </div>
+    <div class="service-card">
+      <div class="svc-icon">🌐</div>
+      <h3>Website &amp; Content Management</h3>
+      <p>Shopify and Wix site building, audits, blog writing, newsletter distribution via Flodesk, and content calendars.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-label">Real Work</div>
+  <h2>Sample Works 🏆</h2>
+
+  <div class="portfolio-tabs">
+    <button class="tab-btn active" onclick="switchTab(event,'coinhub-atm')">Coinhub — ATM Myths</button>
+    <button class="tab-btn" onclick="switchTab(event,'coinhub-nft')">Coinhub — NFTs</button>
+    <button class="tab-btn" onclick="switchTab(event,'coinhub-crypto')">Coinhub — Crypto vs Tokens</button>
+    <button class="tab-btn" onclick="switchTab(event,'ridgewater')">RidgeWater — Real Estate</button>
+    <button class="tab-btn" onclick="switchTab(event,'rwi')">RWI Creative</button>
+    <button class="tab-btn" onclick="switchTab(event,'static')">Static Graphics</button>
+  </div>
+
+  <!-- TAB: Coinhub ATM Myths -->
+  <div class="carousel-section active" id="tab-coinhub-atm">
+    <p class="carousel-desc">Social media carousel for <strong>Coinhub</strong> — debunking Bitcoin ATM myths to educate followers.</p>
+    <div class="carousel-wrap">
+      <button class="cbtn prev" onclick="slide('atm',-1)">‹</button>
+      <div class="carousel-outer"><div class="carousel-track" id="track-atm"></div></div>
+      <button class="cbtn next" onclick="slide('atm',1)">›</button>
+    </div>
+    <div class="cdots" id="dots-atm"></div>
+  </div>
+
+  <!-- TAB: Coinhub NFTs -->
+  <div class="carousel-section" id="tab-coinhub-nft">
+    <p class="carousel-desc">Educational carousel for <strong>Coinhub</strong> — "What are NFTs?" breaking down NFTs for a general audience.</p>
+    <div class="carousel-wrap">
+      <button class="cbtn prev" onclick="slide('nft',-1)">‹</button>
+      <div class="carousel-outer"><div class="carousel-track" id="track-nft"></div></div>
+      <button class="cbtn next" onclick="slide('nft',1)">›</button>
+    </div>
+    <div class="cdots" id="dots-nft"></div>
+  </div>
+
+  <!-- TAB: Coinhub Crypto vs Tokens -->
+  <div class="carousel-section" id="tab-coinhub-crypto">
+    <p class="carousel-desc">Educational carousel for <strong>Coinhub</strong> — breaking down Crypto vs Tokens.</p>
+    <div class="carousel-wrap">
+      <button class="cbtn prev" onclick="slide('crypto',-1)">‹</button>
+      <div class="carousel-outer"><div class="carousel-track" id="track-crypto"></div></div>
+      <button class="cbtn next" onclick="slide('crypto',1)">›</button>
+    </div>
+    <div class="cdots" id="dots-crypto"></div>
+  </div>
+
+  <!-- TAB: RidgeWater -->
+  <div class="carousel-section" id="tab-ridgewater">
+    <p class="carousel-desc">Real estate content for <strong>RidgeWater</strong> (via VisionsDelivered) — "6 Reasons People Are Buying Here Right Now."</p>
+    <div class="carousel-wrap">
+      <button class="cbtn prev" onclick="slide('rw',-1)">‹</button>
+      <div class="carousel-outer"><div class="carousel-track" id="track-rw"></div></div>
+      <button class="cbtn next" onclick="slide('rw',1)">›</button>
+    </div>
+    <div class="cdots" id="dots-rw"></div>
+  </div>
+
+  <!-- TAB: RWI Creative -->
+  <div class="carousel-section" id="tab-rwi">
+    <p class="carousel-desc">Content for <strong>RWI Creative</strong> — an AI/creative agency. Includes the "Anatomy of Design" educational carousel and "Episodic Excellence" campaign.</p>
+    <div class="carousel-wrap">
+      <button class="cbtn prev" onclick="slide('rwi',-1)">‹</button>
+      <div class="carousel-outer"><div class="carousel-track" id="track-rwi"></div></div>
+      <button class="cbtn next" onclick="slide('rwi',1)">›</button>
+    </div>
+    <div class="cdots" id="dots-rwi"></div>
+  </div>
+
+  <!-- TAB: Static Graphics -->
+  <div class="carousel-section" id="tab-static">
+    <p class="carousel-desc">Static promotional graphics designed for various clients including <strong>Coinhub</strong>.</p>
+    <div class="carousel-wrap">
+      <button class="cbtn prev" onclick="slide('static',-1)">‹</button>
+      <div class="carousel-outer"><div class="carousel-track" id="track-static"></div></div>
+      <button class="cbtn next" onclick="slide('static',1)">›</button>
+    </div>
+    <div class="cdots" id="dots-static"></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Work History</div>
+  <h2>Experience 💼</h2>
+  <div class="exp-list">
+    <div class="exp-card">
+      <div class="exp-top"><div class="exp-role">Social Media Manager / Graphic Designer / Video Editor</div><div class="exp-date">Jan–Apr 2026</div></div>
+      <div class="exp-co">MediaMinds PH — Manila, Philippines</div>
+      <ul class="exp-ul">
+        <li>Managed content strategy and publishing for 10+ clients across Instagram, TikTok, Facebook, and Patreon</li>
+        <li>Designed Canva graphics and produced CapCut videos for travel, skincare, fintech, AI/tech, and e-commerce clients</li>
+        <li>Spearheaded full podcast launch for an AI SaaS platform — built SOPs, optimized timing, created captioning templates</li>
+        <li>Used Claude AI daily for content, blog drafts, and workflow automation; trained client teams on AI systems</li>
+        <li>Wrote and distributed client newsletters via Flodesk; coordinated pipelines in Slack, ClickUp, and Notion</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-top"><div class="exp-role">Operations VA</div><div class="exp-date">Jan–Apr 2026</div></div>
+      <div class="exp-co">VisionsDelivered — Atlanta, Georgia (Remote)</div>
+      <ul class="exp-ul">
+        <li>Managed content calendars and digital workflows for US-based clients across real estate, healthcare, fintech, and education</li>
+        <li>Built client websites on Shopify and Wix; conducted site audits with improvement recommendations</li>
+        <li>Created SOPs and structured workflows to standardize content production and onboarding</li>
+        <li>Maintained CRM pipelines in GoHighLevel; delivered pre-meeting research summaries for leadership</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-top"><div class="exp-role">Virtual Assistant — Acquisitions &amp; Admin Support</div><div class="exp-date">Jun 2025–Feb 2026</div></div>
+      <div class="exp-co">Aurum Real Estate Corporation — Manila, Philippines</div>
+      <ul class="exp-ul">
+        <li>Managed 150+ daily inbound emails with a self-built triage system — zero missed responses, same-day turnaround</li>
+        <li>Prepared daily and weekly performance reports summarizing lead pipeline activity for leadership</li>
+        <li>Maintained CRM databases and coordinated calendars across multiple stakeholders</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-top"><div class="exp-role">Guest Service Intern — Airline Operations</div><div class="exp-date">Jun–Sep 2025</div></div>
+      <div class="exp-co">AirAsia Philippines</div>
+      <ul class="exp-ul">
+        <li>Delivered frontline airline customer service — passenger inquiries, flight concerns, time-sensitive resolutions</li>
+        <li>Supported administrative coordination including scheduling, record updates, and team collaboration</li>
+      </ul>
+    </div>
+    <div class="exp-card">
+      <div class="exp-top"><div class="exp-role">Executive Assistant &amp; Real Estate Salesperson</div><div class="exp-date">Aug 2023–Dec 2024</div></div>
+      <div class="exp-co">Networth Real Estate Brokerage — Lipa, Batangas</div>
+      <ul class="exp-ul">
+        <li>Supported content creation, listing promotions, and social media marketing</li>
+        <li>Managed client communications, CRM pipeline updates, and transaction documentation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-label">Key Wins</div>
+  <h2>Achievements 🏅</h2>
+  <div class="ach-grid">
+    <div class="ach-card"><div class="ach-icon">🎙️</div><h3>Podcast Launch from Zero</h3><p>Built the full backend for an AI SaaS podcast — scheduling, platform timing, captioning templates, and SOPs. The workflow runs without extra headcount to this day.</p></div>
+    <div class="ach-card"><div class="ach-icon">🤖</div><h3>AI Integration &amp; Cost Savings</h3><p>Set up and trained a client team on Claude AI (Cowork), eliminating an additional hire while improving output quality across all accounts.</p></div>
+    <div class="ach-card"><div class="ach-icon">📬</div><h3>Inbox Zero System</h3><p>Built a self-designed triage system at Aurum Real Estate handling 150+ daily emails — zero missed responses with consistent same-day turnaround.</p></div>
+    <div class="ach-card"><div class="ach-icon">👥</div><h3>Multi-Client Scale</h3><p>Managed SMM and operations for 10+ simultaneous clients across two US agencies — maintaining quality, deadlines, and satisfaction across all.</p></div>
+    <div class="ach-card"><div class="ach-icon">📸</div><h3>Travel Agency Social Launch</h3><p>Designed branded graphics and launched social media for Infinite Route Travel &amp; Tours, driving engagement for tour and flight packages.</p></div>
+    <div class="ach-card"><div class="ach-icon">🎓</div><h3>Academic Excellence</h3><p>Graduated BS International Travel &amp; Tourism Management With Distinction — GWA 1.317 from Lyceum of the Philippines University.</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2>Let's Work Together 🚀</h2>
+  <p class="contact-sub">Ready to simplify your workflow? I'd love to hear about your business and how I can help. Reach out anytime!</p>
+  <div class="contact-links">
+    <a href="mailto:shanenmortega@gmail.com" class="contact-chip">📧 shanenmortega@gmail.com</a>
+    <a href="https://linkedin.com/in/shanen-barbie-mortega-691815205" class="contact-chip" target="_blank">💼 LinkedIn</a>
+    <a href="https://wa.me/639153402219" class="contact-chip" target="_blank">💬 WhatsApp</a>
+    <a href="https://instagram.com/shanenmortega" class="contact-chip" target="_blank">📸 @shanenmortega</a>
+    <a href="tel:+639153402219" class="contact-chip">📞 +63 915 340 2219</a>
+  </div>
+</section>
+
+<footer>Made with <span>♥</span> · Shanen Barbie K. Mortega · Virtual Assistant · Lipa City, Batangas, PH</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="lbOutside(event)">
+  <button class="lb-close" onclick="lbClose()">×</button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+  <img id="lb-img" src="" alt=""/>
+  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+</div>
+
+<script>
+const DATA = {
+  atm:    ['work1.png','work2.png','work3.png','work4.png','work5.png','work6.png','work7.png'],
+  nft:    ['nft2.png','nft3.png','nft4.png','nft5.png','nft6.png','nft7.png'],
+  crypto: ['work1.png','work2.png','work3.png','work4.png','work5.png','work6.png'],
+  rw:     ['realestate1.png','work1.png','work2.png','work3.png','work4.png','work5.png','work6.png','work7.png'],
+  rwi:    ['nft1.png','work1.png','work2.png','work3.png'],
+  static: ['static1.png']
+};
+
+// Note: 'work1-7' from previous session will show as whatever was last saved.
+// The carousel images are arranged as best as possible given filename collisions.
+// Upload more images with unique names to populate each carousel fully.
+
+const state = {};
+Object.keys(DATA).forEach(id => { state[id] = 0; });
+
+function vis(){
+  if(window.innerWidth<=480) return 1;
+  if(window.innerWidth<=800) return 2;
+  return 3;
+}
+
+function build(id){
+  const track = document.getElementById('track-'+id);
+  if(!track) return;
+  track.innerHTML = DATA[id].map((src,i)=>
+    `<div class="carousel-slide"><img src="${src}" alt="Work ${i+1}" onclick="lbOpen('${id}',${i})"/></div>`
+  ).join('');
+  buildDots(id);
+}
+
+function buildDots(id){
+  const dots = document.getElementById('dots-'+id);
+  if(!dots) return;
+  const pages = Math.ceil(DATA[id].length / vis());
+  dots.innerHTML = '';
+  for(let i=0;i<pages;i++){
+    const d = document.createElement('div');
+    d.className='dot'+(i===0?' active':'');
+    d.onclick=()=>goTo(id, i*vis());
+    dots.appendChild(d);
+  }
+}
+
+function updateTrack(id){
+  const track = document.getElementById('track-'+id);
+  if(!track) return;
+  const slide = track.querySelector('.carousel-slide');
+  if(!slide) return;
+  const w = slide.offsetWidth + 14;
+  track.style.transform = `translateX(-${state[id]*w}px)`;
+  // update dots
+  const dots = document.querySelectorAll('#dots-'+id+' .dot');
+  const page = Math.floor(state[id]/vis());
+  dots.forEach((d,i)=>d.classList.toggle('active',i===page));
+}
+
+function slide(id, dir){
+  const max = Math.max(0, DATA[id].length - vis());
+  state[id] = Math.max(0, Math.min(state[id]+dir, max));
+  updateTrack(id);
+}
+
+function goTo(id, pos){
+  state[id] = Math.min(pos, DATA[id].length - vis());
+  updateTrack(id);
+}
+
+function switchTab(e, tabId){
+  document.querySelectorAll('.carousel-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tabId).classList.add('active');
+  e.target.classList.add('active');
+}
+
+// Lightbox
+let lbId='', lbIdx=0;
+function lbOpen(id,idx){lbId=id;lbIdx=idx;document.getElementById('lb-img').src=DATA[id][idx];document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function lbClose(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function lbOutside(e){if(e.target.id==='lightbox')lbClose();}
+function lbNav(dir){lbIdx=(lbIdx+dir+DATA[lbId].length)%DATA[lbId].length;document.getElementById('lb-img').src=DATA[lbId][lbIdx];}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lbClose();if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);});
+
+window.addEventListener('load',()=>{Object.keys(DATA).forEach(build);});
+window.addEventListener('resize',()=>{Object.keys(DATA).forEach(id=>{state[id]=0;buildDots(id);updateTrack(id);});});
+</script>
+</body>
+</html>
